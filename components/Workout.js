@@ -92,6 +92,7 @@ const ActiveExercise = ({
   changeStep,
   handleChange,
   sets,
+  note,
   user,
   active,
 }) => {
@@ -184,6 +185,11 @@ const ActiveExercise = ({
             sets={sets}
             prevSet={prevSets[2]}
           />
+          <Input
+            placeholder="your notes, like weights"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
         </Flex>
         <Button onClick={() => changeStep(1)}>Next Exercise</Button>
       </Flex>
@@ -196,6 +202,7 @@ const Workout = ({ workout, updateProgress, user }) => {
   const confettiDom = useRef(null)
   const [active, setActive] = useState(0)
   const [sets, setSets] = useState([])
+  const [note, setNote] = useState("")
 
   const handleChange = (value, index) => {
     const newSets = [...sets.slice(0, index), value, ...sets.slice(index + 1)]
@@ -208,7 +215,7 @@ const Workout = ({ workout, updateProgress, user }) => {
     )[0]
     const newIndex = active + update
 
-    updateProgress({ index: active, sets })
+    updateProgress({ index: active, sets, note })
     setSets((userWorkout.exercises[newIndex] || {}).sets || [])
     setActive(newIndex)
 
@@ -252,6 +259,7 @@ const Workout = ({ workout, updateProgress, user }) => {
                   exercise={exercise}
                   handleChange={handleChange}
                   sets={sets}
+                  note={note}
                   changeStep={changeStep}
                   user={user}
                   active={active}
