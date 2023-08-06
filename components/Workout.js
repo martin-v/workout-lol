@@ -111,6 +111,10 @@ const ActiveExercise = ({
   const prevExercise =
     allCompletetExercises.find((e) => e._id === exercise._id) || {}
   const prevSets = prevExercise.sets || []
+  if (note == null) {
+    note = prevExercise.note || ''
+    setNote(note)
+  }
   const [opened, setOpened] = useState(false)
 
   return (
@@ -204,7 +208,7 @@ const Workout = ({ workout, updateProgress, user }) => {
   const confettiDom = useRef(null)
   const [active, setActive] = useState(0)
   const [sets, setSets] = useState([])
-  const [note, setNote] = useState('')
+  const [note, setNote] = useState(null)
 
   const handleChange = (value, index) => {
     const newSets = [...sets.slice(0, index), value, ...sets.slice(index + 1)]
@@ -219,6 +223,7 @@ const Workout = ({ workout, updateProgress, user }) => {
 
     updateProgress({ index: active, sets, note })
     setSets((userWorkout.exercises[newIndex] || {}).sets || [])
+    setNote((userWorkout.exercises[newIndex] || {}).note)
     setActive(newIndex)
 
     if (active === workout.length - 1 && update > 0) {
